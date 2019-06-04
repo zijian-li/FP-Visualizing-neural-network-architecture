@@ -7,6 +7,6 @@ Team members:
 
 Project page: https://cse512-19s.github.io/FP-Visualizing-neural-network-architecture/  
 
-Observable page: https://observablehq.com/@icebubble217/neural-network-visualization
+Observable page: https://observablehq.com/@icebubble217/neural-network-visualization/5
 
 Modify or replace `index.html` in the `docs` folder to update your project page.
