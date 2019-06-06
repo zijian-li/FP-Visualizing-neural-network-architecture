@@ -76,6 +76,15 @@ p { margin: 0 0 10px 0; }
     <em>[Add: a short description of your project, ideally within 150 words.]</em>
   </section>
 
+  <script type="module">
+  import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+
+import notebook from "https://observablehq.com/@icebubble217/neural-network-visualization/8";
+
+new Runtime().module(notebook, Inspector.into(document.body));
+
+</script>
+  
   <section>
     <h2>Running Instructions</h2>
     <em>[Add: running instructions for the software and other optional materials.]</em>
