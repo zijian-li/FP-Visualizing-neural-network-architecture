@@ -1,0 +1,374 @@
+\documentclass[final,hyperref={pdfpagelabels=false}]{beamer}
+\mode<presentation>
+  {
+  %  \usetheme{Berlin}
+  \usetheme{Dreuw}
+  }
+  %\usepackage{times}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  \boldmath
+  \usepackage[english]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage[orientation=landscape,size=a0,scale=1.4,debug]{beamerposter}
+  \usepackage{epstopdf}
+  \usepackage{subcaption}
+  
+  \usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+  \graphicspath{{figures/}}
+  \title[Numerical IST for SG]{Numerical Inverse Scattering for the Sine-Gordon Equation}
+  \author[Bernard Deconinck, Thomas Trogdon and Xin Yang]{Bernard Deconinck$^\dagger$, Thomas Trogdon$^*$ and Xin Yang$^\dagger$\\
+  \texttt{yangxin@uw.edu}}
+  \institute[University of Washington, University of California, Irvine]{$^*$University of California, Irvine, $^\dagger$University of Washington}
+  \date{Jan. 27th, 2017}
+	 	
+\usefonttheme[onlymath]{serif}
+
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+  \begin{document}
+
+  \begin{frame}{}
+
+    \begin{columns}[t]
+      \begin{column}{.39\linewidth}
+        \begin{block}{The sine-Gordon equation}
+           \centering
+        \begin{minipage}{0.95\linewidth}
+          \begin{itemize}
+          \item
+          We want to solve the sine-Gordon equation,
+          \begin{align}
+          u_{tt}+u_{xx}+\sin(u)=0,
+          \label{sge}
+          \end{align}
+          with the initial values,
+          \[
+         u(x,0)=u_0(x),~
+         u_t(x,0)=u_1(x),
+          \]
+          for $x\in \mathbb{R}$. Here $u_0$ and $u_1$ are of Schwartz class.
+          \item This equation is known to be integrable, i.e., there exists a pair of linear systems
+          \begin{align}
+          \phi_x&=X\phi,
+          \label{laxpairx} \\
+          \phi_t&=T\phi,
+          \label{laxpairt}
+          \end{align}
+          with $\phi(x,t)\in \mathbb{R}^{2\times 2}$ and
+          \[
+          X=\underbrace{-\frac{i}{4}(z-z^{-1})\left(
+                    \begin{array}{cc}
+                      1 & 0 \\
+                      0 & -1 \\
+                    \end{array}
+                  \right)}_{J(z)}+\underbrace{\left(
+                            \begin{array}{cc}
+                              \frac{i}{4z} (\cos u -1)& \frac{i}{4z} \sin u -\frac{1}{4}(u_x+u_t)\\
+                              \frac{i}{4z} \sin u+\frac{1}{4}(u_x+u_t) & -\frac{i}{4z} (\cos u -1) \\
+                            \end{array}
+                          \right)}_{Q(z)},
+          \]
+          \[
+          T=-\frac{i}{4}(z+z^{-1})\left(
+                    \begin{array}{cc}
+                      1 & 0 \\
+                      0 & -1 \\
+                    \end{array}
+                  \right)+\left(
+                            \begin{array}{cc}
+                              -\frac{i}{4z} (\cos u -1)& \frac{i}{4z} \sin u -\frac{1}{4}(u_x+u_t)\\
+                              \frac{i}{4z} \sin u+\frac{1}{4}(u_x+u_t) & \frac{i}{4z} (\cos u -1) \\
+                            \end{array}
+                          \right).
+          \]
+          Here $z$ is called the spectral parameter.
+          A function $u(x,t)$ solves the sine-Gordon equation (\ref{sge}) if and only if the compatibility condition $\phi_{xt}=\phi_{tx}$ is satisfied.
+          \item The Inverse Scattering Transform provides a systematic procedure to solve (\ref{sge}).
+          \end{itemize}
+          \end{minipage}
+        \end{block}
+
+            \vfill
+    \begin{block}{The Inverse Scattering Transform compared with the Fourier Transform}
+% Define block styles
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,
+    text width=\linewidth/11, text centered, rounded corners, minimum height=\linewidth/20]
+\tikzstyle{line} = [draw,line width = 3pt, -latex']
+%\tikzstyle{every path}=[line width=2pt]
+      \centering
+      \begin{tikzpicture}
+      [font=\sffamily,
+  every matrix/.style={ampersand replacement=\&,column sep=\linewidth/10,row sep=\linewidth/10},
+  source/.style={draw,thick,rounded corners,fill=yellow!20,inner sep=.3cm},
+  process/.style={draw,thick,circle,fill=blue!20},
+  sink/.style={source,fill=green!20},
+  dots/.style={gray,scale=2},
+  to/.style={->,>=stealth',shorten >=1pt,very thick,font=\sffamily},
+  every node/.style={align=center}]
+        \matrix{
+            \node[block] (initf) {$u(x,0)$}; \& \&  \node[block] (solf) {$u(x,t)$}; \&
+            \node[block] (init) {$u(x,0)$}; \& \&  \node[block] (sol) {$u(x,t)$}; \\
+            \node[block] (sdata0f) { $\hat{u}(k,0)$}; \& \& \node[block] (sdatatf) {$\hat{u}(k,t)$}; \&
+            \node[block] (sdata0) {$S(z,0)$}; \& \& \node[block] (sdatat) {$S(z,t)$}; \\
+   };
+    % Draw edges
+    \path [line] (init) --node[midway,right]{Forward \\ Scattering}  (sdata0);
+    \path [line] (sdata0) -- node[midway,above] {Time Evolution}   (sdatat);
+    \path [line] (sdatat) -- node[midway,right] {Inverse \\Scattering}   (sol);
+    \path [line,dashed] (init) --node[midway,above]  {Integrable PDEs} (sol);
+
+    \path [line] (initf) --node[midway,right]{Fourier \\ Transform}  (sdata0f);
+    \path [line] (sdata0f) -- node[midway,above] {Time Evolution}   (sdatatf);
+    \path [line] (sdatatf) -- node[midway,right] {Inverse \\Fourier \\ Transform}   (solf);
+    \path [line,dashed] (initf) --node[midway,above]  {Linear PDEs} (solf);
+
+\end{tikzpicture}
+
+%\begin{figure}
+%  \centering
+%  % Requires \usepackage{graphicx}
+%  \includegraphics[width=0.45\linewidth]{fourier.png}
+%  \includegraphics[width=0.45\linewidth]{ist.png}
+%  \caption{A comparison of solving PDEs using Fourier transform (left), with the Inverse Scattering Transform (right).}
+%  \label{schematics}
+%\end{figure}
+    \end{block}
+    \vfill
+
+    \begin{block}{Forward scattering}
+               \centering
+        \begin{minipage}{0.95\linewidth}
+       \begin{itemize}
+          \item The goal of forward scattering is to obtain the scattering data
+          \[
+          S(z)=\left(
+          \begin{array}{cc}
+          a(z) & \mathcal{B}(z) \\
+          b(z) & \mathcal{A}(z) \\
+          \end{array}
+          \right).
+          \]
+          \item The scattering data $S(z)$ is defined by a linear transformation between the fundamental solutions of (\ref{laxpairx}):
+          \begin{align}
+          \phi^+(x,z) S(z)=\phi^-(x,z),
+          \label{smatrix}
+          \end{align}
+          where
+          \[
+          \phi^+(x,z)\sim \left(
+                               \begin{array}{cc}
+                                 \exp(-i\frac{z-z^{-1}x}{4}) & 0 \\
+                                 0 & \exp(i\frac{z-z^{-1}x}{4}) \\
+                               \end{array}
+                             \right), \mbox{ as } x\rightarrow +\infty,
+          \]
+          \[
+          \phi^-(x,z)\sim \left(
+                               \begin{array}{cc}
+                                 \exp(-i\frac{z-z^{-1}x}{4}) & 0 \\
+                                 0 & -\exp(i\frac{z-z^{-1}x}{4}) \\
+                               \end{array}
+                             \right), \mbox{ as } x\rightarrow -\infty.
+          \]
+  \item Numerically, we equate
+          \[
+          N(x,z)=\phi(x,z)  \left(
+                               \begin{array}{cc}
+                                 \exp(-i\frac{z-z^{-1}x}{4}) & 0 \\
+                                 0 & \exp(i\frac{z-z^{-1}x}{4}) \\
+                               \end{array}
+                             \right)^{-1} -I.
+          \]
+          Equation (\ref{laxpairx}) becomes
+          \[
+          N_x-(JN-NJ)-QN=Q,
+          \]
+          with vanishing boundary condition at $x=L$ large. This is solved using Chebyshev collocation on both $[-L,0]$ and $[0,L]$. The scattering matrix is computed by matching the solutions at $x=0$.
+       \end{itemize}
+       \end{minipage}
+    \end{block}
+    \vfill
+      \end{column}
+
+      \begin{column}{.30\linewidth}
+        \begin{block}{Forward scattering, continue}
+                   \centering
+        \begin{minipage}{0.95\linewidth}
+          \begin{itemize}
+          \item A useful quantity is the reflection coefficient $\rho(z)=b(z)/a(z)$. The reflection coefficient $\rho(z)$ is of Schwartz class and it and its derivatives have rapid decay as $z\rightarrow 0$. For   $u_0(x)=\mbox{sech}^2(x)$, $u_1(x)=0$
+\begin{figure}
+  \centering
+  \begin{subfigure}{.45\linewidth}
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=1\linewidth]{rho2.eps}
+  \caption*{Plot of $|\rho(z)|$}\label{rho2}
+  \end{subfigure}
+  \begin{subfigure}{.45\linewidth}
+  \centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=1\linewidth]{rho1.eps}
+  \caption*{Loglog plot of $|\rho(z)|$ }\label{rho1}
+    \end{subfigure}
+\end{figure}
+\item For certain initial conditions, $a(z)=0$, at finite number of isolated points $z=\kappa_j,$ $j=1..n$, with Im$(\kappa_j)>0$. At these points, Equation (\ref{smatrix}) becomes
+    \[
+    \phi^-_1=b(\kappa_j)\phi^+_2,
+    \] 
+    where the subscripts denote the columns. This implies the existence of locally supported solutions. Thus finding the zeros of $a(z)$ is equivalent to solving a quadratic eigenvalue problem for (\ref{laxpairx}). By introducing a proper change of variables, it can be further reduced to a standard eigenvalue problem on a periodic domain. Hill's method is used to find these $\kappa_j$.
+\item In the case where $\kappa_j$ are simple, the norming constants $C_j=b_j/a'(\kappa_j)$
+are enough to determine the singularity of $\rho$. The scattering data is equivalently determined by 
+$\{\rho,\kappa_j,C_j|j=1..n\}$. In fact, $\kappa_j,C_j$ correspond to soliton solutioins.
+    \end{itemize}
+          \end{minipage}
+        \end{block}
+
+
+        \begin{block}{Inverse scattering and the Riemann-Hilbert problem}
+                   \centering
+        \begin{minipage}{0.95\linewidth}
+          \begin{itemize}
+          \item One constructs $m(z)$ as a normalized version of $\phi(z)$ satisfying $m\rightarrow I$ as $z \rightarrow \infty$.
+           \item Equation (\ref{smatrix}) becomes
+          \begin{align}
+          m^{+}(z)=m^{-}(z)\left(
+                           \begin{array}{cc}
+                             1+\rho(z)\overline{\rho(\overline{z})} & \overline{\rho(\overline{z})}\exp(-2\theta(z)) \\
+                             \rho(z)\exp(2\theta(z)) & 1 \\
+                           \end{array}
+                         \right),
+          \label{rhp}
+          \end{align} for $z\in \mathbb{R}$
+          where
+          \[
+          \theta(z)=\frac{i}{4}\left((z+z^{-1})t+(z-z^{-1})x\right),
+          \]
+          with residue conditions
+          \[
+          \mbox{Res}_{z=\kappa_j}=\lim_{z\rightarrow \kappa_j} \left(
+                                                                 \begin{array}{cc}
+                                                                   0 & 0 \\
+                                                                   C_j\exp(2\theta(z)) & 0 \\
+                                                                 \end{array}
+                                                               \right),
+          \]
+          \[
+          \mbox{Res}_{z=\bar{\kappa}_j}=\lim_{z\rightarrow \bar{\kappa}_j} \left(
+                                                                 \begin{array}{cc}
+                                                                   0 & \bar{C}_j\exp(-2\theta(z)) \\
+                                                                   0 & 0 \\
+                                                                 \end{array}
+                                                               \right).
+          \]
+           \item Here we have incorporated the time evolution into the Riemann-Hilbert problem. By solving (\ref{laxpairt}) at $x=\infty$, we get
+               \[
+               a(z,t)=a(z,0),~b(z,t)=\exp(it(z+1/z)/4)b(z,0),
+               \] 
+               which determines the $t$ dependence in $\theta$.
+           \item In this setting, $m^{+}(z)$ is analytic (meromorphic) in Im$(z)>0$ while $m^{-}(z)$ is analytic in Im$(z)<0$. Finding sectionally defined analytic functions $m^+(z),m^-(z)$ with given jump condition (\ref{rhp}) is called a Riemann-Hilbert problem.
+          \item This Riemann-Hilbert problem is solved using RHPackage, developed by Olver, which uses Chebyshev collocation on mapped intervals for an equivalent singular integral equation.
+     
+          \end{itemize}
+          \end{minipage}
+        \end{block}
+      \end{column}
+
+       \begin{column}{.28\linewidth}
+         \begin{block}{Reconstruct $u$ from the Riemann-Hilbert problem}
+                    \centering
+        \begin{minipage}{0.95\linewidth}
+          \begin{itemize}
+                \item Once $m(z)$ is obtained, the solution $u(x,t)$ to the sine-Gordon equation can be derived from asymptotics of (\ref{laxpairx}):
+              \[
+              \left(
+                \begin{array}{cc}
+                  \cos(u) & \sin(u) \\
+                  \sin(u) & -\cos(u) \\
+                \end{array}
+              \right)=m^{-1}(0)\left(
+                                 \begin{array}{cc}
+                                   1 & 0 \\
+                                   0 & -1 \\
+                                 \end{array}
+                               \right)m(0).
+              \]
+          \end{itemize}
+          \end{minipage}
+        \end{block}
+
+        \begin{block}{Numerical results}
+                   \centering
+        \begin{minipage}{0.95\linewidth}
+\begin{figure}
+  \centering
+  \minipage{0.45\textwidth}
+   \includegraphics[width=1\linewidth]{sol.eps}
+   \endminipage
+   \hfill
+  \minipage{0.52\textwidth}
+  \includegraphics[width=1\linewidth]{sol2.eps}
+  \endminipage
+   \caption*{A perturbed right-going breather. $u_0=8\mbox{sech}(x)^4,u_1=0$. (left)\\
+   A perturbed left-going kink followed by dispersive tails. $1-\cos(u(x,20))$ is plotted. (right)}
+
+\end{figure}
+
+\begin{figure}
+  \centering
+  \minipage{0.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{sol3.eps}
+  \endminipage
+  \hfill
+  \minipage{0.45\textwidth}
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=1\linewidth]{conv.eps}
+   \endminipage
+  \caption*{A solution with initial condition being the superposition of a right-going breather and left-going kink at $t=0,3,15,35$. (left) In this case, the discrete spectra include one eigenvalue $\kappa_1=ih,~ h>1$, (kink) and one pair of eigenvalues $\kappa_{2,3}=\pm p+iq,~q>0,~p^2+q^2<1$, (breather). \\
+  Loglog plot of the error vs. number of collocations points for $u(1,1)$. (right)}
+\end{figure}
+\end{minipage}
+        \end{block}
+
+        \begin{block}{Conclusion and future work}
+                   \centering
+        \begin{minipage}{0.95\linewidth}
+          \begin{itemize}
+          \item Numerically implemented the Inverse Scattering Transform for the sine-Gordon equation.
+          \item The numerical method is spectrally accurate.
+          \item Since $x,t$ are parameters in the method, time stepping is not required. One computes only at the point of interest.
+          \item Future work includes adding asymptotic results for large $t$ and $x$ which will make the numerical approximation uniform for all $t$ and $x$.
+          \end{itemize}
+          \end{minipage}
+        \end{block}
+
+  \begin{block}{References}
+ %       \begin{thebibliography}{10}
+            %\beamertemplatebookbibitems
+            % Start with overview books.
+%            \beamertemplatearticlebibitems
+            % Followed by interesting articles. Keep the list short.
+%                 \bibitem{tom}
+%                \newblock 
+\begin{minipage}{0.95\linewidth}
+\begin{itemize}
+\item T. Trogdon and S. Olver, (2015). Riemann-Hilbert problems, their numerical solution and the computation of nonlinear special functions, SIAM. 
+\item B. Deconinck and J. N. Kutz (2007). Computing spectra of linear operators using the Floquet-Fourier-Hill method, Journal of Computational Physics. 
+%\item P. J. Cheng, S. Venakides and X. Zhou, (1999). Long-time asymptotics for the pure radiation solution of the sine-Gordon equation, Communications in Partial Differential Equation.
+\item D. J. Kaup, (1975). Method for solving the sine-Gordon equation in laboratory coordinates, Studies in Applied Mathematics.
+\end{itemize}
+\end{minipage}
+\end{block}
+
+      \end{column}
+    \end{columns}
+  \end{frame}
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% End:
