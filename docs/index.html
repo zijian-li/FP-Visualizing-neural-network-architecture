@@ -52,6 +52,30 @@ p { margin: 0 0 10px 0; }
 .footer a:hover {
   color: #ce3333;
 }
+    
+div.sl{
+  position: relative;
+  top: 400px;
+  left:0px;
+  width: 800px;
+  height: 800px;
+} 
+
+div.nn{
+  position: relative;
+  top: 200px;
+  left:50px;
+  width: 800px;
+  height: 200px;
+}
+
+div.ct {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  width: 1050px;
+  height: 700px;
+}
   </style>
 </head>
 <body>
@@ -66,7 +90,28 @@ p { margin: 0 0 10px 0; }
     </p>
   </section>
 
-   <section>
+   <section> 
+ <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
+
+ <script type="module">
+  import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+
+import notebook from "https://api.observablehq.com/@icebubble217/neural-network-visualization/8.js?v=3";
+
+
+const runtime = new Runtime();
+
+const main=runtime.module(notebook, name => {
+    if (name==="chart") {return new Inspector(document.getElementById('chart'))}
+    if (name==="viewof timeButtonsNaive") {return new Inspector(document.getElementById('slider'))}
+    if (name==="viewof model") {return new Inspector(document.getElementById('model'))}
+
+});       
+</script>
+<div id="chart" class="ct"></div>
+<div id="slider" class="sl"></div>
+<div id="model" class="nn"></div>
+
     <em>[Add: a summary figure of your project. Be sure to include relevant captions, too.]</em>
     <p><em>[Add: links to your paper and poster.]</em></p>
   </section>
@@ -76,14 +121,7 @@ p { margin: 0 0 10px 0; }
     <em>[Add: a short description of your project, ideally within 150 words.]</em>
   </section>
 
-  <script type="module">
-  import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
-
-import notebook from "https://api.observablehq.com/@icebubble217/neural-network-visualization/8.js?v=3";
-
-new Runtime().module(notebook, Inspector.into(document.body));
-
-</script>
+  
   
   <section>
     <h2>Running Instructions</h2>
