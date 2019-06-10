@@ -54,30 +54,22 @@ p { margin: 0 0 10px 0; }
   color: #ce3333;
 }
     
-.aaaaa{
-    margin: 0 auto 0 auto;
-    padding: 0;
-    width: 100%;
-    height: 800px;
-    }
-
-    
 div.sl{
-  position: absolute;
+  position: relative;
   top: 400px;
   left:0px;
   width: 800px;
   height: 800px;
 } 
 div.nn{
-  position:  absolute;
+  position:  relative;
   top: 200px;
   left:50px;
   width: 800px;
   height: 200px;
 }
 div.ct {
-  position:  absolute;
+  position:  relative;
   top: 0px;
   right: 0px;
   width: 1050px;
@@ -97,22 +89,17 @@ div.ct {
     </p>
   </section>
 
-   <section class="aaaaa"> 
+   <section> 
  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
 
  <script type="module">
   import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
-
 import notebook from "https://api.observablehq.com/@icebubble217/neural-network-visualization/8.js?v=3";
-
-
 const runtime = new Runtime();
-
 const main=runtime.module(notebook, name => {
     if (name==="chart") {return new Inspector(document.getElementById('chart'))}
     if (name==="viewof timeButtonsNaive") {return new Inspector(document.getElementById('slider'))}
     if (name==="viewof model") {return new Inspector(document.getElementById('model'))}
-
 });       
 </script>
 <div id="chart" class="ct"></div>
@@ -142,4 +129,5 @@ const main=runtime.module(notebook, name => {
  </div>
 </body>
 </html> 
+
 
