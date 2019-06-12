@@ -81,7 +81,7 @@
 %%
 %% The "title" command has an optional parameter,
 %% allowing the author to define a "short title" to be used in page headers.
-\title{Interactive Visualization of Neural Networks}
+\title{Interactive Visualization of Neural Network Activities}
 
 %%
 %% The "author" command and its associated commands are used to define
@@ -119,7 +119,7 @@
 %% other information printed in the page headers. This command allows
 %% the author to define a more concise list
 %% of authors' names for this purpose.
-\renewcommand{\shortauthors}{Trovato and Tobin, et al.}
+%\renewcommand{\shortauthors}{Trovato and Tobin, et al.}
 
 %%
 %% The abstract is a short summary of the work to be presented in the
@@ -141,7 +141,7 @@
 %%
 %% Keywords. The author(s) should pick words that accurately describe
 %% the work being presented. Separate the keywords with commas.
-\keywords{neural networks, visulization, interactive}
+\keywords{Neural networks, Data Visualization, Interactive}
 
 %%
 %% This command processes the author and affiliation and title
@@ -149,9 +149,6 @@
 \maketitle
 
 \section{Introduction}
-
-
-
 
 \subsection{Background}
 
@@ -175,12 +172,12 @@
 %%\item{\verb|sigplan|}: Used for SIGPLAN conference articles.
 %%\end{itemize}
 
-Moths have very simple brain, but they are capable with precise and subtle flying maneuvers. They generate locomotor force by activating the flight muscles to move their wings, and the aerodynamic forces and torques it generates enable they to preform various flying behaviors including fast forward, odor plume tracking, hovering in front of flowers, decelerating upon approach and conpensating for enrionmental perturbations \cite{Stevenson1665}  \cite{Willis1991}
+Insects like moths have very simple brains, yet they are capable of precise and subtle flying maneuvers, which involve complex fluid dynamics. They generate locomotor force by activating the flight muscles to move their wings, and the aerodynamic forces and torques it generates enable they to preform various flying behaviors including fast forward, odor plume tracking, hovering in front of flowers, decelerating upon approach and conpensating for enrionmental perturbations \cite{Stevenson1665}  \cite{Willis1991}
 . To understand how moths control their flight is already by itself interesting, not to mention that  bio-inspired flapping wings system has potential application to micro air vehicles according to Chen in \cite{Chen_2018}. 
 
 \emph{\color{blue} [Picture of a realistic Moth]}
 
-Multiple recent researchers has targeted this question. In \cite{Hedrick3114}, the authors treated this question as an inverse problem, where the input of the system is the initial position, initial velocity targeting position and targeting velocity while the output of the system is the wing motion. They developed an aerodynamic model illustrating how a particular motion in the wings of a moth could result in a kinetic motion. In \cite{Dyhr1523}, they found that not only the wings but also the shape of the body plays an important role in a moth's flight control. New variables such as the angle of the body of the moth were introduced into the model. Further study has also shown that structural deformation also affects flapping wing energetics, see \citep{Jankauski_2018}. Nevertheless, to solve the inverse problem of flight control is intrinsically difficult. It involves solving a highly nonlinear dynamically system. 
+Multiple recent researchers has targeted this question. In \cite{Hedrick3114}, the authors treated this question as an inverse problem, where the input of the system is the initial position, initial velocity, targeting position and targeting velocity while the output of the system is the wing motion. They developed an aerodynamic model illustrating how a particular motion in the wings of a moth could result in a kinetic motion. In \cite{Dyhr1523}, they found that not only the wings but also the shape of the body plays an important role in a moth's flight control. New variables such as the angle of the body of the moth were introduced into the model. Further study has also shown that structural deformation also affects flapping wing energetics, see \citep{Jankauski_2018}. Nevertheless, to solve the inverse problem of flight control is intrinsically difficult. It involves solving a highly nonlinear dynamically system. 
 
 On the other side, people has developed theory to solve dynamical systems with machine learning techniques. For example see \cite{WilliamsRD15}. Moreover, recent study show some very successful examples in solving model based motion control problem with deep learning neural networks. For instance, see \cite{Kalakrishnan} and \cite{Tassa} for legged robot locomation and \cite{Mellinger} for aggressive control of autonomous quadrotors. With these successes, people are also looking into such a deep learning solution to the dynamical system of moth flight control.
 
@@ -197,28 +194,53 @@ Now with these neural networks, we are able to generate an action for a particul
 
 
 
-\section{Interaction}
+\section{Methods}
+Neural networks are a special type of graph networks, which are highly organized in their structures. For a feedforward neural network used in this study, nodes in the graph are divided into layers, and the group of nodes in each layer only connect with nodes in the adjacent layers. \cite{bischof1992visualization} described the visualization of feedforward neural networks, which aligns the position of the nodes according to their layer number. The following Figure \ref{ffnn} shows the structure of one example of a fully-connected feedforward neural network used in the virtual moth modeling. The figure also shows a typical way of visualizing such a neural network: nodes are aligned onto different lines, using the horizontal position to encode their layers. Weights are then drawn as lines connected each two nodes in adjacent layers.  
 
-The ``\verb|acmart|'' document class requires the use of the
-``Libertine'' typeface family. Your \TeX\ installation should include
-this set of packages. Please do not substitute other typefaces. The
-``\verb|lmodern|'' and ``\verb|ltimes|'' packages should not be used,
-as they will override the built-in typeface families.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{ffnn.pdf}
+  \caption{Feedforward Neural Network}
+  \Description{A example of a feedforward neural network structure used in the modeling of a virtual moth. The network is fully-connected between adjacent layers.} 
+  \label{ffnn}
+\end{figure}
 
-\section{Title Information}
+The above visualization of a neural network is clear in understanding the model structure, but has some drawbacks as well. First of all, this visualization is static, which does not respond to the changes in the network, such as activation on the nodes, cutting of of weight connections. Secondly, it is bad under scaling, and can only serve as a conceptual illustration. For example, there are 400 units in the middle layers, but the visualization is incapable of showing all of them, thus it is impossible to show the complete activities and weights architecture in the network. The alignment of all the nodes in one layer, while adjustable to different network structures is a big problem. Lastly, such visualization is only suitable to simple constructions of neural networks such as the feedforward network. With the rapid development of new network structures nowadays, such as the recurrent neural network based on \cite{rumelhart1988learning}, a simple static framework for visualizing all types of neural networks is impossible. We tackles these problems with the following methods.
 
-The title of your work should use capital letters appropriately -
-\url{https://capitalizemytitle.com/} has useful rules for
-capitalization. Use the {\verb|title|} command to define the title of
-your work. If your work has a subtitle, define it with the
-{\verb|subtitle|} command.  Do not insert line breaks in your title.
+\subsection{Computational Graph Construction}
+For a fully-connected feedforward neural network, the connections between each two adjacent layers are in the form of a bipartite graph, which can be represented by a weight matrix $W$, where $W_{ij}$ represents the weight between the $i$-th node in the previous layer and the $j$-th nodes in the next layer. The weight matrices are also the typical data structure of storing a neural network. To consider an arbitrary construction of neural network, however, we consider the most general super-class of neural networks, the computational graph model. The directed graph 
+\[
+G = (V, E)
+\]
+consists of a set of nodes $V$ and the set of edges $E$. Each edge $e \in E$ goes from a node $v_1 \in V$ to another node $v_2 \in V$. In the neural network, the elements in the graph have their properties as follows:
+\begin{align*}
+& v \in V: \ \mbox{node ID}\ i, \ \mbox{layer number}\ l, \ \mbox{activation value}\ u, \\
+& e \in E: \ \mbox{source}\ i, \ \mbox{target}\ j, \ \mbox{weight}\ w.
+\end{align*}
+Note that the activation value $u$ on each nodes is determined not only by the neural network itself, but also depends on the inputs to the network. Therefore, the network construction should be real-time in response to interactive input selection. To solve this problem, we construct the graph together with all  the element properties listed above. For the feedforward neural network case in our study, we implement the forward pass algorithm that starts from the input layers, and iterates throughout the whole network to the output layer. 
 
-If your title is lengthy, you must define a short version to be used
-in the page headers, to prevent overlapping text. The \verb|title|
-command has a ``short title'' parameter:
-\begin{verbatim}
-  \title[short title]{full title}
-\end{verbatim}
+Since many neural networks are highly pruned in our study, a large portion of weights are zeros or close to zero. It is undesirable to show these edges, and thus we throw away these edges in the construction phase. This would help largely reduce the amount of computation in the following visualization stage. In addition to edge trimming, we also walk through the network after construction, and throw away any node which is not connected to any edge. This way the trimmed network is kept as a connected graph, in preparation for the force-directed layout in the next stage.
+
+\subsection{Force Directed Layout}
+In stead of aligning the nodes according to the layers into strict lines, we use the force directed layout scheme \citep{fruchterman1991graph}. Each node $v_i$ is regarded as a charged particle with charge $q_i$. Each two nodes $v_i$ and $v_j$ repel each other with the force
+\[
+F = \frac{q_i q_j}{d_{ij}^2}.
+\]
+Each edge $e$ is considered as a spring, applying the attracting force to the nodes it connects:
+\[
+F = k(L - d_{ij}).
+\]
+Besides, each node in motion is subject to air resistance
+\[
+F = -b v_i.
+\]
+At each time step, the forces acting on each node are calculated, which are then integrated to update its velocity and position. In our system, we implement the force directed layout scheme in d3-force, which uses a velocity Verlet numerical integrator for simulating physical forces on particles. 
+
+To show the layered structure of the neural network better, we apply external force field to form a beeswarm plot. Similar to plotting nodes in different layers onto different X-positions, we apply attractive X-forces to nodes in each layer towards the corresponding X-position. A constant attractive force in the Y direction is also applied to ensure reasonable vertical scale of the plot. The whole graph is also attracted to the center of the plot. To make the algorithm scalable to different sizes of networks, we choose the charges and forced according to the total number of nodes in the graph:
+\[
+F_X \sim \frac{1}{|V|^2}, \quad q \sim \frac{1}{|V|}.
+\]
+
 
 
 
