@@ -125,12 +125,7 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-  A clear and well-documented \LaTeX\ document is presented as an
-  article formatted for publication by ACM in a conference proceedings
-  or journal publication. Based on the ``acmart'' document class, this
-  article presents and explains many of the common variations, as well
-  as many of the formatting elements an author may use in the
-  preparation of the documentation of their work.
+  This project builds an interactive visualization system for neural networks, with application to the flight modeling of a virtual moth. The system visualizes the weight connections, as well as the activation values of the nodes real-time in response to adjustments in the input values. Weights distribution in the network is shown, with the brushing scheme to select absolute values in the desired range. The graph is plotted using the force directed layout scheme to accommodate to networks with different sizes. Visualization results using different neural network structures are shown with various interaction. Extraction of useful information using the system is discussed with examples.
 \end{abstract}
 
 %%
@@ -175,58 +170,50 @@
 Insects like moths have very simple brains, yet they are capable of precise and subtle flying maneuvers, which involve complex fluid dynamics. They generate locomotor force by activating the flight muscles to move their wings, and the aerodynamic forces and torques it generates enable they to preform various flying behaviors including fast forward, odor plume tracking, hovering in front of flowers, decelerating upon approach and conpensating for enrionmental perturbations \cite{Stevenson1665}  \cite{Willis1991}
 . To understand how moths control their flight is already by itself interesting, not to mention that  bio-inspired flapping wings system has potential application to micro air vehicles according to Chen in \cite{Chen_2018}. 
 
-\emph{\color{blue} [Picture of a realistic Moth]}
-
 Multiple recent researchers has targeted this question. In \cite{Hedrick3114}, the authors treated this question as an inverse problem, where the input of the system is the initial position, initial velocity, targeting position and targeting velocity while the output of the system is the wing motion. They developed an aerodynamic model illustrating how a particular motion in the wings of a moth could result in a kinetic motion. In \cite{Dyhr1523}, they found that not only the wings but also the shape of the body plays an important role in a moth's flight control. New variables such as the angle of the body of the moth were introduced into the model. Further study has also shown that structural deformation also affects flapping wing energetics, see \citep{Jankauski_2018}. Nevertheless, to solve the inverse problem of flight control is intrinsically difficult. It involves solving a highly nonlinear dynamically system. 
 
-On the other side, people has developed theory to solve dynamical systems with machine learning techniques. For example see \cite{WilliamsRD15}. Moreover, recent study show some very successful examples in solving model based motion control problem with deep learning neural networks. For instance, see \cite{Kalakrishnan} and \cite{Tassa} for legged robot locomation and \cite{Mellinger} for aggressive control of autonomous quadrotors. With these successes, people are also looking into such a deep learning solution to the dynamical system of moth flight control.
+\subsection{Project Goal}
+In the related study by Dr. Switzer, a researcher in the Biology Department of University of Washington, several deep neural networks are designed to solve the moth flight control problem. Imagine a moth trying to fly, it knows its current position and state, and where it wants to go. To achieve the goal, it needs to figure out the force control over its body that takes it on the trajectory to the destination, ending up with some final velocity. The feedforward neural networks were designed going from "where I am" and "where I want to go" (inputs), to the corresponding controls and final derivatives (outputs). The neural networks are trained with artificial dataset from Monte Carlo simulation, and are pruned to regularize the weights. 
 
-\subsection{Neural Network \& Visualization}
+The goal of this project is to visualize the architectures of the pruned neural networks, which is capable of eliminating weights close to zero. Moreover, this project is unique in that it also interactively show the values of the nodes, in response to real-time adjustment of the input values.
 
-Dr. Switzer, a researcher in the Biology Department of University of Washington, and his colleagues developed several deep learning neural networks in order to solve the moth flight control problem. More specifically, they want to know the following. Suppose I am a moth and I know where I am and where I want to go, how do I get there? To answer this, they first built up a virtual moth. With this virtual moth, they simulated a dataset consisting of the actions the moth is taking and its resulting kinetic motion. After that, they trained several different neural networks, with different scales, using this dataset and lastly they evaluated the predictions by the neural network. It turns out that the best of their model is able to recreate a large share of the variance of the dependent variables in this model, with $r^2 > 0.999$.
-
-\emph{\color{blue} [Picture as PPT page 10]}
-
-\emph{\color{blue} [Picture prediction result]}
-
-
-Now with these neural networks, we are able to generate an action for a particular intended motion that a moth is to take. The next step is to see how meaningful information we are able to extract from this neural network solution.
-
-
-
-\section{Methods}
-Neural networks are a special type of graph networks, which are highly organized in their structures. For a feedforward neural network used in this study, nodes in the graph are divided into layers, and the group of nodes in each layer only connect with nodes in the adjacent layers. \cite{bischof1992visualization} described the visualization of feedforward neural networks, which aligns the position of the nodes according to their layer number. The following Figure \ref{ffnn} shows the structure of one example of a fully-connected feedforward neural network used in the virtual moth modeling. The figure also shows a typical way of visualizing such a neural network: nodes are aligned onto different lines, using the horizontal position to encode their layers. Weights are then drawn as lines connected each two nodes in adjacent layers.  
-
+\subsection{Related Work}
+Neural networks are a special type of graphs, which are highly organized in their structures. For a feedforward neural network used in this study, nodes in the graph are divided into layers, and the group of nodes in each layer only connect with nodes in adjacent layers. \cite{bischof1992visualization} described the visualization of feedforward neural networks, which aligns the position of the nodes according to their layer number. Figure \ref{ffnn} shows the structure of a fully-connected feedforward neural network used in the virtual moth modeling, in a typical way of conceptually visualizing a neural network.  
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{ffnn.pdf}
   \caption{Feedforward Neural Network}
-  \Description{A example of a feedforward neural network structure used in the modeling of a virtual moth. The network is fully-connected between adjacent layers.} 
+  \Description{Example of a fully-connected feedforward neural network used in the modeling of a virtual moth.} 
   \label{ffnn}
 \end{figure}
 
-The above visualization of a neural network is clear in understanding the model structure, but has some drawbacks as well. First of all, this visualization is static, which does not respond to the changes in the network, such as activation on the nodes, cutting of of weight connections. Secondly, it is bad under scaling, and can only serve as a conceptual illustration. For example, there are 400 units in the middle layers, but the visualization is incapable of showing all of them, thus it is impossible to show the complete activities and weights architecture in the network. The alignment of all the nodes in one layer, while adjustable to different network structures is a big problem. Lastly, such visualization is only suitable to simple constructions of neural networks such as the feedforward network. With the rapid development of new network structures nowadays, such as the recurrent neural network based on \cite{rumelhart1988learning}, a simple static framework for visualizing all types of neural networks is impossible. We tackles these problems with the following methods.
+The above graph is clear in understanding the model structure conceptually, but has some drawbacks. First of all, this visualization does not show information such as activation values on the nodes and the weights of the connections. Secondly, it is bad under scaling. For example, there are 400 units in the middle layers, but the plot is incapable of showing the complete weight structure. Lastly, the layout is only suitable for simple structures like feedforward network. With the rapid development of new network structures nowadays such as the recurrent neural network \cite{rumelhart1988learning}, we need a more flexible framework to visualize neural networks.
 
+\section{Methods}
 \subsection{Computational Graph Construction}
-For a fully-connected feedforward neural network, the connections between each two adjacent layers are in the form of a bipartite graph, which can be represented by a weight matrix $W$, where $W_{ij}$ represents the weight between the $i$-th node in the previous layer and the $j$-th nodes in the next layer. The weight matrices are also the typical data structure of storing a neural network. To consider an arbitrary construction of neural network, however, we consider the most general super-class of neural networks, the computational graph model. The directed graph 
+A fully-connected feedforward neural network has connections between each two adjacent layers in the form of a bipartite graph, which can be represented by a weight matrix $W$, where $W_{ij}$ goes from the $i$-th node in the previous layer to the $j$-th node in the next layer. The weight matrices are also the typical data structure of storing a neural network. From the weight data, we can construct a directed graph 
 \[
 G = (V, E)
 \]
-consists of a set of nodes $V$ and the set of edges $E$. Each edge $e \in E$ goes from a node $v_1 \in V$ to another node $v_2 \in V$. In the neural network, the elements in the graph have their properties as follows:
+consisting of the set of nodes $V$ and the set of edges $E$. The elements in the graph have the following properties:
 \begin{align*}
 & v \in V: \ \mbox{node ID}\ i, \ \mbox{layer number}\ l, \ \mbox{activation value}\ u, \\
 & e \in E: \ \mbox{source}\ i, \ \mbox{target}\ j, \ \mbox{weight}\ w.
 \end{align*}
-Note that the activation value $u$ on each nodes is determined not only by the neural network itself, but also depends on the inputs to the network. Therefore, the network construction should be real-time in response to interactive input selection. To solve this problem, we construct the graph together with all  the element properties listed above. For the feedforward neural network case in our study, we implement the forward pass algorithm that starts from the input layers, and iterates throughout the whole network to the output layer. 
 
-Since many neural networks are highly pruned in our study, a large portion of weights are zeros or close to zero. It is undesirable to show these edges, and thus we throw away these edges in the construction phase. This would help largely reduce the amount of computation in the following visualization stage. In addition to edge trimming, we also walk through the network after construction, and throw away any node which is not connected to any edge. This way the trimmed network is kept as a connected graph, in preparation for the force-directed layout in the next stage.
+Note that the activation value $u$ on each nodes is determined not only by the neural network itself, but also depends on the input values. Therefore, the network construction should be real-time in response to interactive input selection. To solve this problem, we construct the graph together with all the element properties. For the feedforward neural networks in our study, we implement the forward pass algorithm starting from the input layer values $u^{(0)}$., and iterates throughout the whole network to the output layer:
+\[
+u^{(l+1)}_j = \tanh \left(\sum_{i} W^{(l+1)}_{i,j} u^{(l)}_i + b^{(l+1)_j\right).
+\]
+
+Since many neural networks are highly pruned in our study, a large portion of weights are zeros or close to zero. It is undesirable to show these edges, and thus we throw away them in the construction phase to reduce the amount of computation in the following visualization stage. Nodes that are not connected to any edge are also thrown away after edge trimming to keep the graph connected.
 
 \subsection{Force Directed Layout}
-In stead of aligning the nodes according to the layers into strict lines, we use the force directed layout scheme \citep{fruchterman1991graph}. Each node $v_i$ is regarded as a charged particle with charge $q_i$. Each two nodes $v_i$ and $v_j$ repel each other with the force
+In stead of aligning the nodes according to the layers into strict lines, we use the force directed layout scheme \cite{fruchterman1991graph}. Each node $v_i$ is regarded as a charged particle with charge $q_i$. Each two nodes $v_i$ and $v_j$ repel each other with the force
 \[
 F = \frac{q_i q_j}{d_{ij}^2}.
 \]
-Each edge $e$ is considered as a spring, applying the attracting force to the nodes it connects:
+Each edge $e_{ij}$ is considered as a spring, applying the attracting force to the nodes it connects:
 \[
 F = k(L - d_{ij}).
 \]
@@ -234,14 +221,68 @@ Besides, each node in motion is subject to air resistance
 \[
 F = -b v_i.
 \]
-At each time step, the forces acting on each node are calculated, which are then integrated to update its velocity and position. In our system, we implement the force directed layout scheme in d3-force, which uses a velocity Verlet numerical integrator for simulating physical forces on particles. 
+At each time step, the forces acting on each node are calculated, which are then integrated to update its velocity and position. In our system, we implement the force directed layout scheme with d3-force, which uses a velocity Verlet numerical integrator for simulating physical forces on particles. 
 
-To show the layered structure of the neural network better, we apply external force field to form a beeswarm plot. Similar to plotting nodes in different layers onto different X-positions, we apply attractive X-forces to nodes in each layer towards the corresponding X-position. A constant attractive force in the Y direction is also applied to ensure reasonable vertical scale of the plot. The whole graph is also attracted to the center of the plot. To make the algorithm scalable to different sizes of networks, we choose the charges and forced according to the total number of nodes in the graph:
+To show the layered structure of the neural network, we apply customized external force field. Similar to plotting nodes in different layers onto different X-positions, we apply attractive X-forces towards different X-position for nodes in different layers. A constant attractive force in the Y direction is also applied to ensure the vertical symmetry of the network. The whole graph is also attracted to the center of the plot. The charges and forced are chosen according to the total number of nodes in the graph:
 \[
 F_X \sim \frac{1}{|V|^2}, \quad q \sim \frac{1}{|V|}.
 \]
 
+\subsection{Visual Encoding}
+Once the graph of the neural network is constructed, we can encode the properties of the nodes and edges. The layer numbers of the nodes are encoded with the customized force directed layout. To represent the activation values of the nodes and highlight the nodes with the largest absolute values, we use the sizes of the nodes to encode the absolute values. The sign of the activation values are encoded with two different colors, representing positive and negative. Since the activation function in the neural network always scales the values of the nodes to $[-1,1]$, we can control the size of the nodes in a certain range. For input and output layers where the activation function is not applied, additional scaling scheme (e.g. activation function) can be applied to adjust the size.
 
+To highlight the most important weights and not to be distracted by other edges, we use both thickness and opacity to over-encode the absolute values of the weights. Since the network is fully-connected between layers with upto 800000 edges, such over-encoding can avoid small weights to cover the space and highlight the dominant weights. To make the system adjustable to different networks, the encoding is linearly scaled according to the maximal weight.
+
+\subsection{Interaction}
+The key feature of the interactive neural network visualization system is the automatic changing of node sizes in response to adjusting input values. For the 10 input values of the virtual moth model, we use slide bars for the user to adjust these values. The activation values of all the nodes in the network are computed in real-time and visualized on the plot. The values in the input layer are also visualized in the X-positions on the slide bar, with values shown in text.
+
+Another important interaction is the brushing scheme to select weights with absolute values in a desirable range. For each edge, we plot its absolute weight on the brushing bar. The sign of the weight is encoded with the color and the Y-position on the brushing bar, forming two lines of dots in two distinct colors. From the brushing bar, the user can see the distribution of the weights in the neural network from the dot density. The "absolute value + double lines" design can exclude the middle part of weights around zeros in a simple way.
+
+In addition to the above two major interactions, the visualization system also allows for other interactions. We use tooltips for detailed information demand, for example the layer number $l$ and activation value $u$ of a node, and the connection information and weight value of an edge. The drag-and-move interaction provided by the force directed layout is also useful. As all the nodes in a single layer (except the input and output layer) are essentially equivalent to each other, the positions of them are arbitrary. User can drag nodes to avoid overlapping of the main edges. Besides, there is a drop-down menu for users to choose the neural network models to visualize. For the virtual moth study, we provide 6 feedforward networks with different structures.
+
+\section{Results}
+\subsection{Visualization Interface}
+Figure \ref{inter} shows the interface of the web-based interactive neural network visualization system. Users can use the drop-down menu to load the neural network model to visualize. The force directed scheme then configures the layout of the graph plot. By adjusting the slide bars on the left, users can see the activation value change of all the nodes instantly, encoded by the size of the nodes. Users can use the brushing bar at the bottom to choose the absolute value range. The brushing bar also shows the weight distribution, as well as how many weights are selected in the target range.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{interface.pdf}
+  \caption{Visualization Interface}
+  \Description{The web-based interface of the interactive neural network visualization system.}
+  \label{inter}
+\end{figure}
+
+As a base example of our visualization, we use the above pruned neural network with $3$ hidden layers of sizes: $(20, 20, 16)$. Input values are chosen using the slide bars to mimic a jumping up of the virtual moth: $x_f = 0.25, y_f = 0.5, \dot{x}_0 = 0.5, \dot{y}_0 = 0, \phi_0=-0.25, \theta_0=0.25, \phi_f=-0.15, \theta_f=0, \dot{\phi}_0 = -0.5, \dot{\theta}_0 = 0.5$. The brushing bar selects only weights with absolute values over 1. We can see that the network is sparse under weight filtering, and there are several dominant edges with large weight values. For the nodes, the visualization shows that only a subset of nodes have significant activation values, and many of them are zeros or close to zero. The weight distribution is shown in the brushing bar, indicating the network is pruned to exclude weights close to zero. 
+
+\subsection{Scaling to Large Networks}
+The visualization system is capable to accommodate large neural networks as well. Figure \ref{max} shows the visualization of a neural network with hidden layer sizes: $( 512, 512, 512, 512)$. Comparing to the previous example, the network is larger in both depth and width, with over 2000 nodes and nearly 800000 edges. We can see that the force directed layout fits this huge network in the plot space nicely. The layers are represented as the disk-shaped clusters. Computational wise, the largest neural network in our study only takes seconds to load and configure the layout, which is tolerable.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{NNmax1.png}
+  \caption{Large Neural Networks}
+  \Description{The visualization system is capable of accommodating to large neural networks automatically.}
+  \label{max}
+\end{figure}
+
+\section{Discussion}
+The interactive neural network visualization system provides useful information to users in both training and analysis stages. By using the brushing bar to exclude weights close to zeros, the user can get an idea of how the network can be trimmed. For example, in Figure \ref{inter}, we can see that the network is sparse under weight filtering, and there are several dominant edges with large weight values. The weight distribution shows that the absolute values of the weight distribution is dense around 1, indicating that the network has been pruned to exclude weights close to zero. For the large network example in Figure \ref{max}, we can see there are areas where the most of the largest weights are going out, indicating the hot spots in the neural network. \\
+
+The interaction of adjusting input values is also useful in understanding the neural network, and is helpful for a explainable model. In Figure \ref{adjust}, we show two scenarios with the same inputs as in Figure \ref{inter}. The only difference is that in the bottom plot $y_f$ is adjusted from $0.5$ to $-0.5$. We can see that a different group of nodes are in active now, and some nodes have a sign change. Researchers can use this feature to identify the active area in the neural network while doing certain movement, and which nodes are interconnected. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{compare.pdf}
+  \caption{Input Adjustment}
+  \Description{Comparing the node values under adjustment of a single input value.}
+  \label{adjust}
+\end{figure}
+
+\section{Future Work}
+Besides the current features, there can be additional improvements in future work. The in addition to changing the node values in real-time, we can also change the network structure at the same time. Nodes that are of zeros activation values are of no use in propagating information, thus the edges going out of it are actually useless, regardless of their large weights. Therefore, we may define the activity level of each edge by the activation level of the outgoing node. The visualization of the activity level can be encoded such that inactive edges are invisible (e.g. use thickness or opacity).
+
+Additionally, we may show the strongest path that is connected to each node upon tooltip. Also, it is interesting to visualize the configuration of the virtual moth in real-time (imaging a moth that moves its body), which helps the audience to understand the meaning of the inputs and outputs better. Lastly, we can visualize the distribution of the node values in real-time, as an estimation of "neuron activity level".
+\end{itemize}
 
 
 %\section{Rights Information}
@@ -268,129 +309,7 @@ F_X \sim \frac{1}{|V|^2}, \quad q \sim \frac{1}{|V|}.
 %each of the works.
 
 
-\section{Tables}
 
-The ``\verb|acmart|'' document class includes the ``\verb|booktabs|''
-package --- \url{https://ctan.org/pkg/booktabs} --- for preparing
-high-quality tables.
-
-Table captions are placed {\itshape above} the table.
-
-Because tables cannot be split across pages, the best placement for
-them is typically the top of the page nearest their initial cite.  To
-ensure this proper ``floating'' placement of tables, use the
-environment \textbf{table} to enclose the table's contents and the
-table caption.  The contents of the table itself must go in the
-\textbf{tabular} environment, to be aligned properly in rows and
-columns, with the desired horizontal and vertical rules.  Again,
-detailed instructions on \textbf{tabular} material are found in the
-\textit{\LaTeX\ User's Guide}.
-
-Immediately following this sentence is the point at which
-Table~\ref{tab:freq} is included in the input file; compare the
-placement of the table here with the table in the printed output of
-this document.
-
-\begin{table}
-  \caption{Frequency of Special Characters}
-  \label{tab:freq}
-  \begin{tabular}{ccl}
-    \toprule
-    Non-English or Math&Frequency&Comments\\
-    \midrule
-    \O & 1 in 1,000& For Swedish names\\
-    $\pi$ & 1 in 5& Common in math\\
-    \$ & 4 in 5 & Used in business\\
-    $\Psi^2_1$ & 1 in 40,000& Unexplained usage\\
-  \bottomrule
-\end{tabular}
-\end{table}
-
-To set a wider table, which takes up the whole width of the page's
-live area, use the environment \textbf{table*} to enclose the table's
-contents and the table caption.  As with a single-column table, this
-wide table will ``float'' to a location deemed more
-desirable. Immediately following this sentence is the point at which
-Table is included in the input file; again, it is
-instructive to compare the placement of the table here with the table
-in the printed output of this document.
-
-\begin{table*}
-  \caption{Some Typical Commands}
-  \label{tab:commands}
-  \begin{tabular}{ccl}
-    \toprule
-    Command &A Number & Comments\\
-    \midrule
-    \texttt{{\char'134}author} & 100& Author \\
-    \texttt{{\char'134}table}& 300 & For tables\\
-    \texttt{{\char'134}table*}& 400& For wider tables\\
-    \bottomrule
-  \end{tabular}
-\end{table*}
-
-
-\section{Figures}
-
-The ``\verb|figure|'' environment should be used for figures. One or
-more images can be placed within a figure. If your figure contains
-third-party material, you must clearly identify it as such, as shown
-in the example below.
-\begin{figure}[h]
-  \centering
- % \includegraphics[width=\linewidth]{sample-franklin}
-  \caption{1907 Franklin Model D roadster. Photograph by Harris \&
-    Ewing, Inc. [Public domain], via Wikimedia
-    Commons. (\url{https://goo.gl/VLCRBB}).}
-  \Description{The 1907 Franklin Model D roadster.}
-\end{figure}
-
-Your figures should contain a caption which describes the figure to
-the reader. Figure captions go below the figure. Your figures should
-{\bfseries also} include a description suitable for screen readers, to
-assist the visually-challenged to better understand your work.
-
-Figure captions are placed {\itshape below} the figure.
-
-\subsection{The ``Teaser Figure''}
-
-A ``teaser figure'' is an image, or set of images in one figure, that
-are placed after all author and affiliation information, and before
-the body of the article, spanning the page. If you wish to have such a
-figure in your article, place the command immediately before the
-\verb|\maketitle| command:
-\begin{verbatim}
-  \begin{teaserfigure}
-    \includegraphics[width=\textwidth]{sampleteaser}
-    \caption{figure caption}
-    \Description{figure description}
-  \end{teaserfigure}
-\end{verbatim}
-
-
-
-
-\section{SIGCHI Extended Abstracts}
-
-The ``\verb|sigchi-a|'' template style (available only in \LaTeX\ and
-not in Word) produces a landscape-orientation formatted article, with
-a wide left margin. Three environments are available for use with the
-``\verb|sigchi-a|'' template style, and produce formatted output in
-the margin:
-\begin{itemize}
-\item {\verb|sidebar|}:  Place formatted text in the margin.
-\item {\verb|marginfigure|}: Place a figure in the margin.
-\item {\verb|margintable|}: Place a table in the margin.
-\end{itemize}
-
-%%
-%% The acknowledgments section is defined using the "acks" environment
-%% (and NOT an unnumbered section). This ensures the proper
-%% identification of the section in the article metadata, and the
-%% consistent spelling of the heading.
-\begin{acks}
-To Robert, for the bagels and explaining CMYK and color spaces.
-\end{acks}
 
 %%
 %% The next two lines define the bibliography style to be used, and
@@ -402,28 +321,6 @@ To Robert, for the bagels and explaining CMYK and color spaces.
 %% If your work has an appendix, this is the place to put it.
 \appendix
 
-\section{Research Methods}
-
-
-\subsection{Part Two}
-
-Etiam commodo feugiat nisl pulvinar pellentesque. Etiam auctor sodales
-ligula, non varius nibh pulvinar semper. Suspendisse nec lectus non
-ipsum convallis congue hendrerit vitae sapien. Donec at laoreet
-eros. Vivamus non purus placerat, scelerisque diam eu, cursus
-ante. Etiam aliquam tortor auctor efficitur mattis.
-
-\section{Online Resources}
-
-Nam id fermentum dui. Suspendisse sagittis tortor a nulla mollis, in
-pulvinar ex pretium. Sed interdum orci quis metus euismod, et sagittis
-enim maximus. Vestibulum gravida massa ut felis suscipit
-congue. Quisque mattis elit a risus ultrices commodo venenatis eget
-dui. Etiam sagittis eleifend elementum.
-
-Nam interdum magna at lectus dignissim, ac dignissim lorem
-rhoncus. Maecenas eu arcu ac neque placerat aliquam. Nunc pulvinar
-massa et mattis lacinia.
 
 \end{document}
 \endinput
