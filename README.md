@@ -21,27 +21,27 @@ Data Pre-processing:
   Zhengde Zhao
 
 Designing: 
-  Zijian Li
-   Yue Zhao
+  Zijian Li, 
+   Yue Zhao, 
    Zhengde Zhao
    
 Programing: 
-  Zijian Li
-  Yue Zhao
+  Zijian Li, 
+  Yue Zhao, 
   Zhengde Zhao
   
 Webpage Developing: 
-  Zijian Li
-  Yue Zhao
+  Zijian Li, 
+  Yue Zhao, 
   Zhengde Zhao
   
 Poster and presentation: 
-  Zijian Li
-  Yue Zhao
+  Zijian Li, 
+  Yue Zhao, 
   Zhengde Zhao
   
 Publication: 
-  Zijian Li
+  Zijian Li, 
   Zhengde Zhao
 
 
