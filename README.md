@@ -12,8 +12,7 @@ Project page: https://cse512-19s.github.io/FP-Visualizing-neural-network-archite
 Observable page: https://observablehq.com/@icebubble217/neural-network-visualization/10
 
 
-
-Staff
+Work Split
 
 Coordination with partnering researcher: Zhengde Zhao
 Data Pre-processing: Zhengde Zhao
