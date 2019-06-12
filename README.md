@@ -44,7 +44,7 @@ Publication:
   Zijian Li, 
   Zhengde Zhao
 
-
+Project Commentory: This project is an integrated process, from brainstorming of ideas, to preprocessing of data accross different platforms and environments, to actual coding and computation, to visualization deployment on the webpage. Each step is very connected with others, and they all influence the final delivery largely. There was a large portion of time dedicated to debuging the code to compute the neural network values, and visualization also showed its power in our debugging process!
 
 Acknowledgement
 
