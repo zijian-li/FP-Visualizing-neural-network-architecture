@@ -14,13 +14,35 @@ Observable page: https://observablehq.com/@icebubble217/neural-network-visualiza
 
 Work Split
 
-Coordination with partnering researcher: Zhengde Zhao
-Data Pre-processing: Zhengde Zhao
-Designing: Zijian Li, Yue Zhao, Zhengde Zhao
-Programing: Zijian Li, Yue Zhao, Zhengde Zhao
-Webpage Developing: Zijian Li, Yue Zhao, Zhengde Zhao
-Poster and presentation: Zijian Li, Yue Zhao, Zhengde Zhao
-Publication: Zijian Li, Zhengde Zhao
+Coordination with partnering researcher: 
+  Zhengde Zhao
+
+Data Pre-processing: 
+  Zhengde Zhao
+
+Designing: 
+  Zijian Li
+   Yue Zhao
+   Zhengde Zhao
+   
+Programing: 
+  Zijian Li
+  Yue Zhao
+  Zhengde Zhao
+  
+Webpage Developing: 
+  Zijian Li
+  Yue Zhao
+  Zhengde Zhao
+  
+Poster and presentation: 
+  Zijian Li
+  Yue Zhao
+  Zhengde Zhao
+  
+Publication: 
+  Zijian Li
+  Zhengde Zhao
 
 
 
