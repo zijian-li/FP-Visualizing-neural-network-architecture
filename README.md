@@ -49,4 +49,4 @@ Project Commentory: This project is an integrated process, from brainstorming of
 Acknowledgement
 
 I would like to express our special thanks of gratitude to Prof. Jeffrey Heer for his professional planning and instruction of this course and as well as Matthew Conlen, Yang Liu, Sherry Wu and Halden Lin for all the help they offered as the teaching assistants. Our success would be impossible without their effort. 
-Secondly we would also like to thank Dr. Callin Callin Switzer who shared us with this golden project idea and generously offered his data. We appreciate the great ideas he provided through our discussion.
+Secondly we would also like to thank Dr. Callin Switzer who shared us with this golden project idea and generously offered his data. We appreciate the great ideas he provided through our discussion.
